@@ -4,7 +4,7 @@ require 'optparse'
 #Build the filter from the command line arguments
 filters = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: ruby find.rb [-name file_name] [-regex file_regex] path1 [path2 ...]"
+  opts.banner = "Usage: ruby find.rb [--name file_name] [--regex file_regex] path1 [path2 ...]"
   opts.on('-n', '--name [NAME]', 'Search for files with a given name') do |name|
     filters[:name] = name
   end
