@@ -1,0 +1,41 @@
+ABOUT
+
+This is a ruby implementation of a subset of UNIX find's
+functionality. It supports exact file matching, full-path regex
+matching,  and file creation time tests.
+
+Multiple file filters are supported at once, and each must be true for
+a file to be found. For example:
+
+ruby ./find.rb --name "file" --ctime_min 0.1 ./
+
+Would find files in the current directory (recursively) that have the
+filename "file" AND that were created at least 0.1 days ago.
+
+There is no support for arbitrary boolean combinations of filters like
+in the real find.
+
+Adding support for other file tests is easy, through modification
+of the FileFilter class.
+
+SETUP
+
+The find tool requires ruby (it was tested successfully with 1.8.7 and
+1.9.2). To run tests, rake is required. Because the program is not
+packaged as a gem, it must be run from the root project directory.
+
+USAGE
+
+ruby ./find.rb [-name file_name] [-regex file_regex] path1 [path2 ...]
+    -n, --name [NAME]                Search for files with a given name
+    -r, --regex [REGEX]              Search with a given (ruby-style) regex
+        --ctime_min [DAYS]           Min creation time in days ago
+
+TESTING
+
+A Rakefile is provided to run the Test::Unit tests that live in the
+test/ directory. To run them, run "rake" from the main directory. They
+should all pass.
+
+The tests use the subdir test/dummy_dir as the directory test
+environment on which to execute.
