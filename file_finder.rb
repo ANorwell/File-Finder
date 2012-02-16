@@ -25,7 +25,7 @@ class FileFinder
     end
     
     files = []
-    if @filter.match(dir)
+    if File.exist?(dir) and @filter.match(dir)
       files = [dir]
     end
     if not File.directory?(dir)

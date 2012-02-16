@@ -19,16 +19,15 @@ class TestFind < Test::Unit::TestCase
     assert_equal("#{@dir}/dir1", files[0])
   end
 
-  def test_empty
-    files = @finder.find("#{@dir}/dir_empty")
-    assert_equal(1, files.size)
-    assert_equal("#{@dir}/dir_empty", files[0])
+  def test_not_exist
+    files = @finder.find("#{@dir}/dir_nonsense")
+    assert_equal(0, files.size)
   end
 
   def test_well_formed_dirs
-    files = @finder.find("#{@dir}/dir_empty/")
-    assert_equal(1, files.size)
-    assert_equal("#{@dir}/dir_empty", files[0])
+    files = @finder.find("#{@dir}/dir1/")
+    assert_equal(3, files.size)
+    assert(files.include?("#{@dir}/dir1"))
   end
 
 
@@ -41,7 +40,7 @@ class TestFind < Test::Unit::TestCase
 
   def test_recursive
     files = @finder.find("#{@dir}/dir_deep")
-    assert_equal(7, files.size)
+    assert_equal(9, files.size)
     assert(files.include?("#{@dir}/dir_deep/dir3/dir/file"))
   end
 end
@@ -67,7 +66,7 @@ class TestFilteredFind < Test::Unit::TestCase
   end
 
   def test_find_ctime_min
-    filter_find_helper({:ctime_min => '0.1' }, 7)
+    filter_find_helper({:ctime_min => '0.000001' }, 9)
   end
 
   
