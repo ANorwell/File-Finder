@@ -10,10 +10,14 @@ If multiple filters provided, they all must match.
 This implementation intentionally avoids File.find, since it would be "too
 easy", but a proper implementation would use it.
 =end
-require "./file_filter"
+require "./boolean_filter"
 class FileFinder
-  def initialize(args={})
-    @filter = FileFilter.new(args)
+  def initialize(args)
+    @boolean_filter = BooleanFilter.new(args)
+  end
+
+  def test(dir)
+    @boolean_filter.match(dir)
   end
   
   def find(dir)
@@ -25,7 +29,7 @@ class FileFinder
     end
     
     files = []
-    if File.exist?(dir) and @filter.match(dir)
+    if File.exist?(dir) and test(dir)
       files = [dir]
     end
     if not File.directory?(dir)
@@ -39,4 +43,3 @@ class FileFinder
     files
   end
 end
-

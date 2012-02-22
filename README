@@ -7,10 +7,10 @@ matching,  and file creation time tests.
 Multiple file filters are supported at once, and each must be true for
 a file to be found. For example:
 
-ruby ./find.rb --name "file" --ctime_min 0.1 ./
+ruby ./find.rb ./ name foo AND ctime_min 0.1
 
 Would find files in the current directory (recursively) that have the
-filename "file" AND that were created at least 0.1 days ago.
+filename "foo" AND that were created at least 0.1 days ago.
 
 There is no support for arbitrary boolean combinations of filters like
 in the real find.
@@ -26,10 +26,22 @@ packaged as a gem, it must be run from the root project directory.
 
 USAGE
 
-ruby ./find.rb [-name file_name] [-regex file_regex] path1 [path2 ...]
-    -n, --name [NAME]                Search for files with a given name
-    -r, --regex [REGEX]              Search with a given (ruby-style) regex
-        --ctime_min [DAYS]           Min creation time in days ago
+ruby ./find.rb path [BOOLEAN EXPRESSION]
+
+where BOOLEAN EXPRESSION is valid combination of FILE FILTERS,
+combined using the tokens AND, OR, NOT, (, and ). For example:
+
+(name foo OR regex ^bar) AND ctime_min 0.1
+
+FILE FILTERS
+
+Currently the following filters are supported:
+
+name - exact name match against the file name
+regex - a (ruby-style) regex to match against the full file path
+ctime_min - creation time minimum in days. e.g. "ctime_min 0.1" will
+find files that are at least 0.1 days old.
+ctime_max - creation time maximum in days.
 
 TESTING
 
@@ -39,3 +51,10 @@ should all pass.
 
 The tests use the subdir test/dummy_dir as the directory test
 environment on which to execute.
+
+POSSIBLE TODO:
+-add more filters
+-support for OR or even general boolean exprs
+-use File.find?
+-error checking (for main?)?
+-tests for main?

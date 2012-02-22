@@ -17,6 +17,9 @@ class FileFilter
     :ctime_min => lambda do |file, argument|
       #The difference of two time objects is in seconds, but argument is days
       (Time.now - File.stat(file).ctime)/(24*60*60) > argument.to_f
+    end,
+    :ctime_max => lambda do |file,argument|
+      (Time.now - File.stat(file).ctime)/(24*60*60) < argument.to_f
     end
   }
 

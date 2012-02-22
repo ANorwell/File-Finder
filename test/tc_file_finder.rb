@@ -30,7 +30,6 @@ class TestFind < Test::Unit::TestCase
     assert(files.include?("#{@dir}/dir1"))
   end
 
-
   #find allows find on a file, which just returns the file itself
   def test_file
     files = @finder.find("#{@dir}/file1")
@@ -40,7 +39,7 @@ class TestFind < Test::Unit::TestCase
 
   def test_recursive
     files = @finder.find("#{@dir}/dir_deep")
-    assert_equal(9, files.size)
+    assert_equal(10, files.size)
     assert(files.include?("#{@dir}/dir_deep/dir3/dir/file"))
   end
 end
@@ -48,6 +47,7 @@ end
 class TestFilteredFind < Test::Unit::TestCase
   def setup
     @dir = "test/dummy_dir"
+    @total_files = 10
   end
 
   #Helper: Given a filter, checks if the recognized file count in
@@ -58,22 +58,15 @@ class TestFilteredFind < Test::Unit::TestCase
   end
 
   def test_find_name
-    filter_find_helper({:name => 'dir' }, 3)
+    filter_find_helper(%w{name dir }, 3)
   end
 
   def test_find_regex
-    filter_find_helper({:regex => '\/di\w+$' }, 6)
+    filter_find_helper(%w{ regex \/di\w+$ }, 6)
   end
 
   def test_find_ctime_min
-    filter_find_helper({:ctime_min => '0.000001' }, 9)
+    filter_find_helper(%w{ctime_min 0.000001}, @total_files)
   end
-
-  
 end
-
-
-
-
-
 
